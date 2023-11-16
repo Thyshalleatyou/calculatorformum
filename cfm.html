@@ -1,0 +1,121 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>calculator for mum</title>
+    <style>
+        body {
+            background-color: black;
+            color: white;
+            font-family: Arial, sans-serif;
+        }
+
+        #calculator {
+            margin: 50px auto;
+            padding: 20px;
+            width: 400px;
+            background-color: black;
+            border: 2px solid white;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        input {
+            width: 100%;
+            padding: 10px; /* Increased padding for 20% bigger input boxes */
+            margin-bottom: 15px; /* Increased margin for spacing between input boxes */
+            box-sizing: border-box;
+            background-color: white;
+            color: black;
+        }
+
+        button {
+            width: 100%;
+            padding: 12px; /* Increased padding for 20% bigger button */
+            box-sizing: border-box;
+            background-color: green;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        #result {
+            margin-top: 20px;
+            color: green;
+            font-size: 18px;
+        }
+
+        #formulas {
+            text-align: left;
+            color: gray;
+            font-size: 20px; /* Increased font size for 20% bigger formulas */
+            margin-top: 20px;
+        }
+
+        #formulas span {
+            color: white;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div id="calculator">
+        <label for="a">Enter the value for a:</label>
+        <input type="text" id="a" placeholder="Input">
+
+        <label for="b">Enter the value for b (as a percentage):</label>
+        <input type="text" id="b" placeholder="Input">
+
+        <label for="e">Enter the value for e (as a percentage):</label>
+        <input type="text" id="e" placeholder="Input">
+
+        <button onclick="calculate()">Calculate</button>
+
+        <div id="formulas">
+            <div>(1) <span>Tax 1 = a * b</span></div>
+            <div>(2) <span>Salaire 1 = a - Tax 1</span></div>
+            <div>(3) <span>Tax 2 = Salaire 1 * e</span></div>
+            <div>(4) <span>Salaire 2 = Salaire 1 - Tax 2</span></div>
+            <div>(5) <span>Result = Salaire 2 + Tax 1</span></div>
+        </div>
+
+        <div id="result"></div>
+    </div>
+
+    <script>
+        function calculate() {
+            // Get input values with default values if empty
+            var aInput = document.getElementById('a').value.trim();
+            var bInput = document.getElementById('b').value.trim();
+            var eInput = document.getElementById('e').value.trim();
+
+            var a = aInput === '' ? undefined : parseFloat(aInput);
+            var b = bInput === '' ? undefined : (parseFloat(bInput) / 100); // Convert percentage to decimal
+            var e = eInput === '' ? undefined : (parseFloat(eInput) / 100); // Convert percentage to decimal
+
+            // Check if the inputs are valid numbers
+            if ((a !== undefined && isNaN(a)) || (b !== undefined && isNaN(b)) || (e !== undefined && isNaN(e))) {
+                document.getElementById('result').innerHTML = 'Please enter valid numbers.';
+                return;
+            }
+
+            // Calculate the intermediate results
+            var tax1 = a * b;
+            var salaire1 = a - tax1;
+            var tax2 = salaire1 * e;
+            var salaire2 = salaire1 - tax2;
+            var result = salaire2 + tax1;
+
+            // Display the intermediate results and final result as numbers
+            document.getElementById('result').innerHTML = 'Result: ' + result.toFixed(2);
+            document.getElementById('formulas').innerHTML =
+                '<div>(1) <span>Tax 1 = ' + tax1.toFixed(2) + '</span></div>' +
+                '<div>(2) <span>Salaire 1 = ' + salaire1.toFixed(2) + '</span></div>' +
+                '<div>(3) <span>Tax 2 = ' + tax2.toFixed(2) + '</span></div>' +
+                '<div>(4) <span>Salaire 2 = ' + salaire2.toFixed(2) + '</span></div>' +
+                '<div>(5) <span>Result = ' + result.toFixed(2) + '</span></div>';
+        }
+    </script>
+</body>
+</html>
